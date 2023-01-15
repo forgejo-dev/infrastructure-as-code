@@ -1,0 +1,33 @@
+---
+- name: Include minio vars
+  ansible.builtin.include_vars:
+    file: minio.yml
+    name: minio_config
+
+- name: Create project directory
+  ansible.builtin.file:
+    path: /srv/docker-compose/minio
+    state: directory
+    mode: '0755'
+
+- name: Copy docker compose file
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /srv/docker-compose/minio/{{ item }}
+    mode: 0644
+  with_items:
+    - docker-compose.yml
+
+- name: Copy ENV file
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /srv/docker-compose/minio/{{ item }}
+    mode: 0644
+  with_items:
+    - .env
+
+- name: Deploy docker compose stack
+  community.docker.docker_compose:
+    project_src: /srv/docker-compose/minio/
+    files:
+      - docker-compose.yml

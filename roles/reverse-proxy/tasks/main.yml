@@ -1,0 +1,25 @@
+---
+- name: Create the webshare network
+  community.docker.docker_network:
+    name: webshare
+
+- name: Create project directory
+  ansible.builtin.file:
+    path: /srv/docker-compose/web
+    state: directory
+    mode: '0755'
+
+- name: Copy docker compose files
+  ansible.builtin.copy:
+    src: files/{{ item }}
+    dest: /srv/docker-compose/web/{{ item }}
+    mode: 0644
+  loop:
+    - docker-compose.yml
+    - proxy.conf
+
+- name: Deploy docker compose stack
+  community.docker.docker_compose:
+    project_src: /srv/docker-compose/web/
+    files:
+      - docker-compose.yml

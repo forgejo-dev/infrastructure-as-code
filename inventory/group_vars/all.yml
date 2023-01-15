@@ -1,0 +1,33 @@
+---
+
+#
+# Configuration for roles
+#
+
+role_config:
+  vault_enable: false
+  ssh_custom_enable: true
+  firewall_enable: true
+
+
+#
+# Configuration of packages etc.
+#
+
+user_name: maxkratz
+sshd_config: /etc/ssh/sshd_config
+sshd: "ssh"
+sshd_port: "50001"
+
+#
+# Configuraion of URLs etc.
+#
+
+staging_url: "staging.forgejo.dev"
+prod_url: "forgejo.dev"
+
+#
+# Forgejo config
+#
+
+forgejo_ssh_port: "22"

@@ -1,0 +1,53 @@
+---
+- name: Add apt signing key
+  ansible.builtin.apt_key:
+    url: https://deb.volian.org/volian/scar.key
+    state: present
+
+- name: Add apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://deb.volian.org/volian/ scar main"
+    state: present
+
+- name: Install nala
+  ansible.builtin.apt:
+    pkg:
+      - nala-legacy
+
+- name: Add nala alias to user config
+  ansible.builtin.blockinfile:
+    dest: /home/{{ user_name }}/.zshrc
+    marker: '{mark} ANSIBLE MANAGED BLOCK'
+    marker_begin: '\n# BEGIN'
+    marker_end: '# END'
+    block: |
+      apt() {
+        command nala "$@"
+      }
+      sudo() {
+        if [ "$1" = "apt" ]; then
+          shift
+          command sudo nala "$@"
+        else
+          command sudo "$@"
+        fi
+      }
+
+- name: Add nala alias to root config
+  ansible.builtin.blockinfile:
+    dest: /root/.zshrc
+    marker: '{mark} ANSIBLE MANAGED BLOCK'
+    marker_begin: '\n# BEGIN'
+    marker_end: '# END'
+    block: |
+      apt() {
+        command nala "$@"
+      }
+      sudo() {
+        if [ "$1" = "apt" ]; then
+          shift
+          command sudo nala "$@"
+        else
+          command sudo "$@"
+        fi
+      }

@@ -1,0 +1,74 @@
+version: "3"
+
+networks:
+  forgejo:
+    external: false
+  web:
+    external: true
+    name: webshare
+
+services:
+  # forgejo server
+  server:
+    image: codeberg.org/forgejo/forgejo:1.18.0-1
+    container_name: forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=db:5432
+      - GITEA__database__NAME=forgejo
+      - GITEA__database__USER=forgejo
+      - GITEA__database__PASSWD=forgejo
+      - ROOT_URL="https://{{instance_url}}"
+      - VIRTUAL_HOST={{instance_url}}
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST={{instance_url}}
+      - GITEA__mailer__ENABLED=true
+      - GITEA__mailer__FROM=${GITEA__mailer__FROM:?GITEA__mailer__FROM not set}
+      - GITEA__mailer__USER=${GITEA__mailer__USER:?GITEA__mailer__USER not set}
+      - GITEA__mailer__PASSWD="""${GITEA__mailer__PASSWD:?GITEA__mailer__PASSWD not set}"""
+      - GITEA__mailer__SMTP_ADDR=${GITEA__mailer__SMTP_ADDR:?GITEA__mailer__SMTP_ADDR not set}
+      - GITEA__mailer__SMTP_PORT=${GITEA__mailer__SMTP_PORT:?GITEA__mailer__SMTP_PORT not set}
+      - GITEA__service__DISABLE_REGISTRATION=true
+      - GITEA__service__ENABLE_NOTIFY_MAIL=true
+      - GITEA__service__ENABLE_OPENID_SIGNIN=false
+      - GITEA__service__ENABLE_OPENID_SIGNUP=false
+      - GITEA__service__ALLOW_ONLY_INTERNAL_REGISTRATION=true
+      - GITEA__metrics__ENABLED=true
+      - GITEA__webhook__ALLOWED_HOST_LIST=external,loopback
+      - GITEA__storage__STORAGE_TYPE=minio
+      - GITEA__storage__MINIO_ENDPOINT=minio:9000
+      - GITEA__storage__MINIO_ACCESS_KEY_ID=${MINIO_ACCESS_KEY:?MINIO_ACCESS_KEY not set}
+      - GITEA__storage__MINIO_SECRET_ACCESS_KEY=${MINIO_SECRET_KEY:?MINIO_SECRET_KEY not set}
+      - GITEA__storage__MINIO_BUCKET=gitea
+      - GITEA__storage__MINIO_LOCATION=us-east-1
+      - GITEA__storage__MINIO_USE_SSL=false
+      - GITEA__server__SSH_PORT={{ forgejo_ssh_port }}
+      - GITEA__ui__DEFAULT_THEME=forgejo-dark
+    restart: unless-stopped
+    networks:
+      - forgejo
+      - web
+    volumes:
+      - ./forgejo:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+#      - "3000:3000"
+      - "{{ forgejo_ssh_port }}:22"
+    depends_on:
+      - db
+
+  # postgres database
+  db:
+    image: postgres:14
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=forgejo
+      - POSTGRES_PASSWORD=forgejo
+      - POSTGRES_DB=forgejo
+    networks:
+      - forgejo
+    volumes:
+      - ./postgres:/var/lib/postgresql/data

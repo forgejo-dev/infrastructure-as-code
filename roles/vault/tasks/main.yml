@@ -1,0 +1,16 @@
+---
+- name: Add apt signing key
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Add apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com jammy main"
+    state: present
+
+- name: Install vault via apt
+  ansible.builtin.apt:
+    pkg:
+      - vault
+    update_cache: true

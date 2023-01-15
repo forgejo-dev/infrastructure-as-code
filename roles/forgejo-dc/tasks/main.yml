@@ -1,0 +1,62 @@
+---
+- name: Include SMTP vars
+  ansible.builtin.include_vars:
+    file: smtp.yml
+    name: smtp_config
+
+- name: Include minio vars
+  ansible.builtin.include_vars:
+    file: minio.yml
+    name: minio_config
+
+- name: Create project directory
+  ansible.builtin.file:
+    path: /srv/docker-compose/forgejo
+    state: directory
+    mode: '0755'
+
+- name: Copy docker compose file
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /srv/docker-compose/forgejo/{{ item }}
+    mode: 0644
+  with_items:
+    - docker-compose.yml
+
+- name: Copy ENV file
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /srv/docker-compose/forgejo/{{ item }}
+    mode: 0644
+  with_items:
+    - .env
+
+- name: Deploy docker compose stack
+  community.docker.docker_compose:
+    project_src: /srv/docker-compose/forgejo/
+    files:
+      - docker-compose.yml
+
+# Customization(s)
+- name: Create custom template(s) folder
+  ansible.builtin.file:
+    path: /srv/docker-compose/forgejo/forgejo/gitea/templates/custom
+    state: directory
+    mode: '0755'
+
+- name: Copy file with extra links
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /srv/docker-compose/forgejo/forgejo/gitea/templates/custom/{{ item }}
+    mode: 0644
+  with_items:
+    - extra_links_footer.tmpl
+    - extra_links.tmpl
+
+- name: Copy home template
+  ansible.builtin.copy:
+    src: files/{{ item }}
+    dest: /srv/docker-compose/forgejo/forgejo/gitea/templates/{{ item }}
+    mode: 0644
+  loop:
+    - home.tmpl

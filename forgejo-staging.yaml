@@ -1,0 +1,14 @@
+---
+- name: Check SSH port
+  import_playbook: ssh.yaml
+- name: Deploy forgejo
+  hosts: staging
+  roles:
+    - reverse-proxy
+    - forgejo-dc
+    - woodpecker-dc
+    - minio-dc
+  become: true
+  vars:
+    instance_url: "{{staging_url}}"
+    woodpecker_mode: "woodpecker_staging.yml"

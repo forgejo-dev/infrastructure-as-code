@@ -1,0 +1,8 @@
+---
+- name: Check SSH port
+  import_playbook: ssh.yaml
+- name: Monitoring
+  hosts: all
+  roles:
+    - geerlingguy.node_exporter
+  become: true

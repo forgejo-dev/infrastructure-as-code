@@ -1,0 +1,35 @@
+---
+- name: Install apt packages
+  ansible.builtin.apt:
+    pkg:
+      - ncdu
+      - htop
+      - iftop
+      - iotop
+      - neofetch
+      - git
+      - dnsutils
+      - nload
+      - mtr-tiny
+      - vnstat
+      - tmux
+      - bmon
+      - iperf
+      - iperf3
+      - curl
+      - wget
+      - rsync
+      - build-essential
+      - gnupg2
+      - nmap
+      - speedtest-cli
+      - sshfs
+      - tldr
+      - tree
+      - net-tools
+      - edac-utils
+      - silversearcher-ag
+      - whois
+      - fio
+      - lm-sensors
+      - dos2unix

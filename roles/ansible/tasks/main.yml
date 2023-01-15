@@ -1,0 +1,17 @@
+---
+- name: Install ansible via apt
+  ansible.builtin.apt:
+    pkg:
+      - ansible
+- name: Install apt dependencies
+  ansible.builtin.apt:
+    pkg:
+      - python3-docker
+      - python3-pip
+- name: Install docker dependencies via pip
+  ansible.builtin.include_role:
+    name: geerlingguy.pip
+  vars:
+    pip_install_packages:
+      - name: docker
+      - name: docker-compose

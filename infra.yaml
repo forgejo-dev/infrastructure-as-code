@@ -1,0 +1,26 @@
+---
+- name: Check SSH port
+  import_playbook: ssh.yaml
+- name: Basic config
+  hosts: all
+  roles:
+    - role: apt-updates
+      become: true
+    - role: apt-packages
+      become: true
+    - role: docker
+      become: true
+    - role: zsh
+    - role: nala
+      become: true
+    - role: ansible
+      become: true
+    - role: vault
+      when: "role_config.vault_enable"
+      become: true
+    - role: sshd-config
+      when: "role_config.ssh_custom_enable"
+      become: true
+    - role: firewall
+      when: "role_config.firewall_enable"
+      become: true

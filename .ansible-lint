@@ -1,0 +1,9 @@
+---
+# .ansible-lint
+# See: https://ansible-lint.readthedocs.io/configuring/#ansible-lint-configuration
+
+# Ansible-lint completely ignores rules or tags listed below
+skip_list:
+  - no-changed-when
+  - name[template]
+  - latest[git]

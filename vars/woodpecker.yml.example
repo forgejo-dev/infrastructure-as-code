@@ -1,0 +1,9 @@
+---
+
+#
+# Woodpecker configuration
+#
+
+agent_secret: "TODO"
+gitea_client: "TODO"
+gitea_secret: "TODO"

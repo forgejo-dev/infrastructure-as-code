@@ -1,0 +1,2 @@
+staging ansible_host=staging.forgejo.dev ansible_user=maxkratz ansible_port="{{ sshd_port }}"
+production ansible_host=forgejo.dev ansible_user=maxkratz ansible_port="{{ sshd_port }}"

@@ -1,0 +1,30 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  minio:
+    image: minio/minio:RELEASE.2020-01-03T19-12-21Z
+    restart: unless-stopped
+    volumes:
+      - ./minio-config:/root/.minio
+      - ./minio-data:/data
+#    ports:
+#      - "9000:9000"
+    environment:
+      - VIRTUAL_HOST=s3.{{instance_url}}
+      - VIRTUAL_PORT=9000
+      - LETSENCRYPT_HOST=s3.{{instance_url}}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:?MINIO_ACCESS_KEY not set}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY:?MINIO_SECRET_KEY not set}
+      - MINIO_SERVER_URL=https://s3.{{instance_url}}
+      - MINIO_UPDATE=off
+      - MINIO_REGION=us-east-1
+    entrypoint: sh
+    command: "-c 'mkdir -p /data && /usr/bin/minio server /data'"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+    name: webshare

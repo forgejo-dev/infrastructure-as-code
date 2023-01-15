@@ -1,0 +1,10 @@
+---
+
+#
+# SMTP configuration
+#
+
+host: mail.1uhosting.de
+port: 465
+user: no-reply@forgejo.dev
+pw: 123

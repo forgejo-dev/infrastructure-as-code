@@ -1,0 +1,9 @@
+---
+- name: Basic infrastructure
+  import_playbook: infra.yaml
+- name: Monitoring
+  import_playbook: monitoring.yaml
+- name: Forgejo staging
+  import_playbook: forgejo-staging.yaml
+- name: Forgejo production
+  import_playbook: forgejo-prod.yaml

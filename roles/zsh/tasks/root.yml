@@ -1,0 +1,77 @@
+---
+# https://git.maxkratz.com/maxkratz/apt-packages/src/branch/master/scripts/zsh/zsh-setup.sh
+- name: Install zsh dependencies + packages
+  become: true
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - git
+      - zsh
+      - powerline
+      - fonts-powerline
+      - tmux
+      - locales
+    state: present
+
+- name: Switch default shell to zsh
+  ansible.builtin.shell: "chsh -s $(which zsh)"
+  become: true
+
+- name: Check if oh-my-zsh is already installed
+  ansible.builtin.stat:
+    path: /root/.oh-my-zsh
+  register: omz_root_found
+  become: true
+
+- name: Clean previous oh-my-zsh installation
+  become: true
+  ansible.builtin.file:
+    path: /root/.oh-my-zsh
+    state: absent
+  when: omz_root_found.stat.exists
+
+- name: Run oh-my-zsh setup
+  become: true
+  ansible.builtin.shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" < /dev/null'
+
+- name: Copy config file to root home
+  become: true
+  ansible.builtin.copy:
+    src: .zshrc
+    dest: /root/.zshrc
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install plug-in zsh-autosuggestions
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: /root/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  become: true
+
+- name: Install plug-in zsh-peco-history
+  ansible.builtin.git:
+    repo: https://github.com/jimeh/zsh-peco-history.git
+    dest: /root/.oh-my-zsh/custom/plugins/zsh-peco-history
+  become: true
+
+- name: Touch ~/.z
+  ansible.builtin.file:
+    path: ~/.z
+    state: touch
+    mode: 0644
+  become: true
+
+- name: Creates ~/.gnupg/
+  ansible.builtin.file:
+    path: ~/.gnupg/
+    state: directory
+    mode: 0644
+  become: true
+
+- name: Apply bugfixes for z and agnoster
+  ansible.builtin.shell: |
+    locale-gen en_US.UFT-8
+    export LANG=en_US.utf8
+  become: true

@@ -1,0 +1,5 @@
+---
+- name: Configure ZSH for root
+  ansible.builtin.include_tasks: root.yml
+- name: Configure ZSH for user
+  ansible.builtin.include_tasks: user.yml

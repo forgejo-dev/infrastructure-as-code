@@ -60,3 +60,9 @@
     mode: 0644
   loop:
     - home.tmpl
+
+- name: Restart docker compose stack
+  community.docker.docker_compose:
+    project_src: /srv/docker-compose/forgejo/
+    build: false
+    restarted: true

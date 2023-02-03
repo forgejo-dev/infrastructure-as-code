@@ -31,4 +31,4 @@ prod_url: "forgejo.dev"
 #
 
 forgejo_ssh_port: "22"
-forgejo_release: "1.18.2-1"
+forgejo_release: "1.18.3-0"

@@ -3,9 +3,9 @@ version: '3'
 
 services:
   woodpecker-server:
-    image: woodpeckerci/woodpecker-server:latest
-#    ports:
-#      - 8000:8000
+    image: codeberg.org/forgejo-contrib/woodpecker-forgejo-server:next
+    ports:
+      - "127.0.0.1:9000:9000"
     volumes:
       - ./data:/var/lib/woodpecker/
     restart: unless-stopped
@@ -30,7 +30,7 @@ services:
       - woodpecker-database
 
   woodpecker-agent:
-    image: woodpeckerci/woodpecker-agent:latest
+    image: codeberg.org/forgejo-contrib/woodpecker-forgejo-agent:next
     command: agent
     restart: unless-stopped
     depends_on:
@@ -40,6 +40,7 @@ services:
     environment:
       - WOODPECKER_SERVER=woodpecker-server:9000
       - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET:?WOODPECKER_AGENT_SECRET not set}
+      - WOODPECKER_BACKEND=docker
     networks:
       - woodpecker-net
 
@@ -49,8 +50,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-#    ports:
-#      - '5432:5432'
     volumes: 
       - ./db:/var/lib/postgresql/data
     networks:

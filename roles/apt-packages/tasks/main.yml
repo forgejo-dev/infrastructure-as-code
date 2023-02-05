@@ -33,3 +33,4 @@
       - fio
       - lm-sensors
       - dos2unix
+      - jq

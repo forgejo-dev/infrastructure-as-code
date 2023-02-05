@@ -7,6 +7,7 @@
       - curl
       - gnupg
       - lsb-release
+      - apparmor
     state: present
 
 - name: Add apt signing key

@@ -1,0 +1,21 @@
+[Unit]
+Description=LXC Woodpecker agent instance
+
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+Environment=WOODPECKER_SERVER=127.0.0.1:9000
+Environment=WOODPECKER_AGENT_SECRET="{{ woodpecker_config.agent_secret }}"
+Environment=WOODPECKER_BACKEND=lxc
+Environment=WOODPECKER_FILTER_LABELS=platform=lxc
+ExecStart=/opt/woodpecker/woodpecker-agent
+Restart=always
+RestartSec=10
+ExecReload=/bin/kill -HUP $MAINPID
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

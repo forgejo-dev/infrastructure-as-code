@@ -7,3 +7,5 @@
   import_playbook: forgejo-staging.yaml
 - name: Forgejo production
   import_playbook: forgejo-prod.yaml
+- name: Backup
+  import_playbook: backup.yaml

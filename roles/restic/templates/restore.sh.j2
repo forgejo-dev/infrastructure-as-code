@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+# Set crypto passphrase for encryption
+export AWS_ACCESS_KEY_ID={{ backup_config.access_key }}
+export AWS_SECRET_ACCESS_KEY={{ backup_config.secret_key }}
+export RESTIC_PASSWORD={{ backup_config.restic_key }}
+export RESTIC_REPOSITORY={{ backup_config.restic_target }}
+restic="/opt/restic/restic"
+dir_prefix="/backup/dbs"
+
+# Write beginning date to backup log
+echo 'Restore date' $(date)'.'
+echo ' '
+
+# Unlock lock of repo
+$restic unlock
+
+# Show snapshots
+$restic snapshots
+
+# Restore the latest backup to /tmp/restic/restore
+mkdir -p /tmp/restic/restore
+# One of each paths is enough to match filter
+$restic --verbose restore latest --target /tmp/restic/restore --path "/var/log" --host "{{prod_url}}"
+$restic --verbose restore latest --target /tmp/restic/restore --path "/etc" --host "{{prod_url}}"
+$restic --verbose restore latest --target /tmp/restic/restore --path "/root" --host "{{prod_url}}"
+
+# Write end to log file
+echo ' '
+echo '============================'
+echo ' '
+
+# Unset ENVs
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset RESTIC_PASSWORD
+unset RESTIC_REPOSITORY

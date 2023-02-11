@@ -1,0 +1,75 @@
+---
+- name: Include backup vars
+  ansible.builtin.include_vars:
+    file: backup.yml
+    name: backup_config
+
+- name: Install restic dependencies
+  ansible.builtin.apt:
+    name:
+      - fuse
+      - bzip2
+      - pigz
+    state: present
+
+- name: Download restic
+  ansible.builtin.get_url:
+    url: "https://github.com/restic/restic/releases/download/v{{ backup_config.restic_version }}/restic_{{ backup_config.restic_version }}_linux_amd64.bz2"
+    dest: "/tmp/restic_{{ backup_config.restic_version }}_linux_amd64.bz2"
+
+- name: Extract restic
+  command: "bzip2 -d /tmp/restic_{{ backup_config.restic_version }}_linux_amd64.bz2"
+  args:
+    creates: "/tmp/restic_{{ backup_config.restic_version }}_linux_amd64"
+
+- name: Create restic directory
+  ansible.builtin.file:
+    path: /opt/restic
+    state: directory
+    mode: '0755'
+
+- name: Install restic
+  ansible.builtin.copy:
+    remote_src: true
+    src: "/tmp/restic_{{ backup_config.restic_version }}_linux_amd64"
+    dest: "/opt/restic/restic"
+    mode: 0755
+
+- name: Remove downloaded file
+  ansible.builtin.file:
+    path: "/tmp/restic_{{ backup_config.restic_version }}_linux_amd64"
+    state: absent
+
+- name: Copy scripts
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /opt/restic/{{ item }}
+    mode: 0755
+  loop:
+    - backup.sh
+    - restore.sh
+
+- name: Create log folder
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0644
+  loop:
+    - /var/log/restic
+
+- name: Create empty log file
+  ansible.builtin.copy:
+    content: ""
+    dest: /var/log/restic/backup.log
+    force: false
+    group: sys
+    owner: root
+    mode: 0644
+
+- name: Add daily cronjob for backups
+  ansible.builtin.cron:
+    name: "restic backup"
+    user: root
+    minute: "0"
+    hour: "4"
+    job: "/opt/restic/backup.sh >> /var/log/restic/backup.log"

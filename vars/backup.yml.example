@@ -1,0 +1,11 @@
+---
+
+#
+# Backup configuration
+#
+
+restic_version: "0.15.1"
+restic_target: "s3:https://s3.TODO.com/BUCKET"
+restic_key: "TODO"
+access_key: "TODO"
+secret_key: "TODO"

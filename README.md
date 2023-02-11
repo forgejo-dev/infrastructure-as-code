@@ -19,6 +19,8 @@ Automation to create/configure the infrastructure for all services related to [f
     - Replace the dummy values with the real ones (values are only available after the manual creation of an OAuth2 app)
 - Copy `vars/minio.yml.example` to `vars/minio.yml`
     - Replace the dummy values with the real ones
+- Copy `vars/backup.yml.example` to `vars/backup.yml`
+    - Replace the dummy values with the real ones
 
 
 ## Terraform

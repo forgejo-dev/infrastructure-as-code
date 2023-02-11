@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+# Set crypto passphrase for encryption
+export AWS_ACCESS_KEY_ID={{ backup_config.access_key }}
+export AWS_SECRET_ACCESS_KEY={{ backup_config.secret_key }}
+export RESTIC_PASSWORD={{ backup_config.restic_key }}
+export RESTIC_REPOSITORY={{ backup_config.restic_target }}
+restic="/opt/restic/restic"
+dir_prefix="/backup/dbs"
+
+# Write beginning date to backup log
+echo 'Backup date' $(date)'.'
+echo ' '
+
+# Create database dump folders
+mkdir -p $dir_prefix/forgejo/postgres
+mkdir -p $dir_prefix/woodpecker/postgres
+
+# Remove previous dumps
+rm -f $dir_prefix/forgejo/postgres/dump.sql
+rm -f $dir_prefix/woodpecker/postgres/dump.sql
+
+# Dump databases
+docker exec -t forgejo_db_1 pg_dumpall -c -U forgejo > $dir_prefix/forgejo/postgres/dump.sql
+docker exec -t woodpecker_woodpecker-database_1 pg_dumpall -c -U postgres > $dir_prefix/woodpecker/postgres/dump.sql
+
+# Check if repo must be initialized
+if $restic cat config >/dev/null 2>&1; then
+    echo 'Repo was already initialized'
+else
+    echo 'Repo not initialized.'
+    $restic init
+fi
+
+# Unlock lock of repo
+$restic unlock
+
+# Do a backup
+$restic --verbose backup /var/log /var/lib/docker/volumes /srv /backup
+$restic --verbose backup /etc /opt
+$restic --verbose backup /home /root
+
+# Clean up older backups
+$restic --verbose forget --keep-last 5 --keep-daily 14 --keep-weekly 4 --keep-monthly 24
+
+# Data clean up
+$restic --verbose prune
+
+# Write end to log file
+echo ' '
+echo '============================'
+echo ' '
+
+# Unset ENVs
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset RESTIC_PASSWORD
+unset RESTIC_REPOSITORY

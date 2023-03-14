@@ -94,7 +94,7 @@ output "server_ip_staging" {
 resource "hcloud_server" "production" {
   name = "production"
   image = "debian-11"
-  server_type = "cpx11"
+  server_type = "cpx21"
   location = "nbg1"
   ssh_keys  = ["${data.hcloud_ssh_key.ssh_key.id}"]
   user_data = templatefile("user_data.yml.tpl", {

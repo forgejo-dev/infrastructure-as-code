@@ -82,8 +82,11 @@ resource "hcloud_rdns" "staging-rdns-v6" {
 }
 
 # Output Server Public IP address 
-output "server_ip_staging" {
+output "server_ipv4_staging" {
   value = "${hcloud_server.staging.ipv4_address}"
+}
+output "server_ipv6_staging" {
+  value = "${hcloud_server.staging.ipv6_address}"
 }
 
 
@@ -119,6 +122,9 @@ resource "hcloud_rdns" "production-rdns-v6" {
 }
 
 # Output Server Public IP address 
-output "server_ip_production" {
+output "server_ipv4_production" {
   value = "${hcloud_server.production.ipv4_address}"
+}
+output "server_ipv6_production" {
+  value = "${hcloud_server.production.ipv6_address}"
 }

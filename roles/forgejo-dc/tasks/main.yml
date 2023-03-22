@@ -36,6 +36,7 @@
     project_src: /srv/docker-compose/forgejo/
     files:
       - docker-compose.yml
+    remove_orphans: true
 
 # Customization(s)
 - name: Create custom template(s) folder
@@ -66,3 +67,4 @@
     project_src: /srv/docker-compose/forgejo/
     build: false
     restarted: true
+    remove_orphans: true

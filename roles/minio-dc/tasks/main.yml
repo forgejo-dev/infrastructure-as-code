@@ -31,3 +31,4 @@
     project_src: /srv/docker-compose/minio/
     files:
       - docker-compose.yml
+    remove_orphans: true

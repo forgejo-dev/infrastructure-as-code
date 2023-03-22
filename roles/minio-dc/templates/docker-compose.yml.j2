@@ -3,7 +3,7 @@ version: '3'
 
 services:
   minio:
-    image: minio/minio:RELEASE.2020-01-03T19-12-21Z
+    image: minio/minio:RELEASE.2022-10-24T18-35-07Z
     restart: unless-stopped
     volumes:
       - ./minio-config:/root/.minio
@@ -19,8 +19,20 @@ services:
       - MINIO_SERVER_URL=https://s3.{{instance_url}}
       - MINIO_UPDATE=off
       - MINIO_REGION=us-east-1
-    entrypoint: sh
-    command: "-c 'mkdir -p /data && /usr/bin/minio server /data'"
+    command: server --console-address ":9002" /data
+    networks:
+      - web
+
+  tunnel:
+    image: marcnuri/port-forward
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=console.s3.{{instance_url}}
+      - VIRTUAL_PORT=9002
+      - LETSENCRYPT_HOST=console.s3.{{instance_url}}
+      - REMOTE_HOST=minio
+      - REMOTE_PORT=9002
+      - LOCAL_PORT=9002
     networks:
       - web
 

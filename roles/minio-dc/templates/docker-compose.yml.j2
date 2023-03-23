@@ -20,7 +20,8 @@ services:
       - MINIO_UPDATE=off
       - MINIO_REGION=us-east-1
       - MINIO_VOLUMES="/data"
-    command: server --address ":9000" --console-address ":9002" $MINIO_VOLUMES
+      - MINIO_BROWSER_REDIRECT_URL=https://console.s3.{{instance_url}}
+    command: server --address ":9000" --console-address ":9002"
     networks:
       - web
 

@@ -25,6 +25,7 @@ sshd_port: "50001"
 
 staging_url: "staging.forgejo.dev"
 prod_url: "forgejo.dev"
+migration_url: "s3-mig.forgejo.dev"
 
 #
 # Forgejo config

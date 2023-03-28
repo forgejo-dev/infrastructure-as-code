@@ -1,0 +1,13 @@
+---
+- name: Check SSH port
+  import_playbook: ssh.yaml
+- name: Basic infrastructure
+  import_playbook: infra.yaml
+- name: (Re-)Deploy Minio S3
+  hosts: s3-mig
+  roles:
+    - reverse-proxy
+    - minio-dc
+  become: true
+  vars:
+    instance_url: "{{migration_url}}"

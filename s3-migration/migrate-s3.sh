@@ -30,5 +30,5 @@ mc admin service restart s3trg
 mc admin cluster bucket export s3src
 mc admin cluster bucket import s3trg cluster-metadata.zip
 
-# mirroring
+# mirroring existing bucket -> migration server/bucket
 mc mirror -preserve --watch s3src/gitea s3trg/gitea

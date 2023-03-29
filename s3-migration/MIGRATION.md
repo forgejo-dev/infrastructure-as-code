@@ -11,6 +11,8 @@ Steps (in theory):
 - Re-deploy a new instance with the new backend version to replace the old instance
 - Migrate metadata + bucket data from temporary instance to the new instance
 
+Please notice: `mc` copies the whole data over the network. Due to slow speeds at home/office, it is recommend to run the migration on one of the servers.
+
 
 ## Commands/Steps to run
 

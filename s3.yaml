@@ -2,9 +2,9 @@
 - name: Check SSH port
   import_playbook: ssh.yaml
 - name: (Re-)Deploy Minio S3
-  hosts: staging
+  hosts: all
   roles:
     - minio-dc
   become: true
   vars:
-    instance_url: "{{staging_url}}"
+    instance_url: "{{prod_url}}"

@@ -105,6 +105,8 @@ resource "hcloud_server" "production" {
     passwd = var.passwd
     fqdn = "forgejo.dev"
   })
+  delete_protection = true
+  rebuild_protection = true
 }
 
 # Set RDNS entry of production server IPv4

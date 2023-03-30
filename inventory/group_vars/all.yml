@@ -33,3 +33,10 @@ migration_url: "s3-mig.forgejo.dev"
 
 forgejo_ssh_port: "22"
 forgejo_release: "1.19.0-2"
+
+#
+# Swap config
+#
+
+swap_size: "2048"
+swap_file: "/swapfile"

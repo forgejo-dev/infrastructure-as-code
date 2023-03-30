@@ -24,3 +24,5 @@
     - role: firewall
       when: "role_config.firewall_enable"
       become: true
+    - role: swap
+      become: true

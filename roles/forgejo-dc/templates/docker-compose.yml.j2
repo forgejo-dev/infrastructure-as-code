@@ -47,6 +47,7 @@ services:
       - GITEA__server__SSH_PORT={{ forgejo_ssh_port }}
       - GITEA__ui__DEFAULT_THEME=forgejo-dark
       - GITEA____APP_NAME=Forgejo.dev
+      - GITEA__attachment__MAX_SIZE=100
     restart: unless-stopped
     networks:
       - forgejo

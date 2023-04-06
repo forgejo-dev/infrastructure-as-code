@@ -1,5 +1,5 @@
 ---
-- name: Determin SSH port
+- name: Determine SSH port
   hosts: all
   gather_facts: no
   tasks:

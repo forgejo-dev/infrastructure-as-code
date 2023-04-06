@@ -15,6 +15,7 @@ resource "hcloud_server" "production" {
   })
   delete_protection = true
   rebuild_protection = true
+  firewall_ids = [hcloud_firewall.forgejo-fw.id]
 }
 
 # Set RDNS entry of production server IPv4

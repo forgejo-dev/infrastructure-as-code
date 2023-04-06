@@ -8,6 +8,7 @@ resource "hcloud_primary_ip" "staging-ipv4" {
   assignee_type = "server"
   auto_delete = false
   datacenter = "nbg1-dc3"
+  delete_protection = true
 }
 
 resource "hcloud_primary_ip" "staging-ipv6" {
@@ -16,6 +17,7 @@ resource "hcloud_primary_ip" "staging-ipv6" {
   assignee_type = "server"
   auto_delete = false
   datacenter = "nbg1-dc3"
+  delete_protection = true
 }
 
 resource "hcloud_server" "staging" {

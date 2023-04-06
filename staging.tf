@@ -35,6 +35,7 @@ resource "hcloud_server" "staging" {
     ipv4 = hcloud_primary_ip.staging-ipv4.id
     ipv6 = hcloud_primary_ip.staging-ipv6.id
   }
+  firewall_ids = [hcloud_firewall.forgejo-fw.id]
 }
 
 # Set RDNS entry of staging server IPv4

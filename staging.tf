@@ -2,6 +2,22 @@
 # Create the staging server
 #
 
+resource "hcloud_primary_ip" "staging-ipv4" {
+  name = "staging-ipv4"
+  type = "ipv4"
+  assignee_type = "server"
+  auto_delete = false
+  datacenter = "nbg1-dc3"
+}
+
+resource "hcloud_primary_ip" "staging-ipv6" {
+  name = "staging-ipv6"
+  type = "ipv6"
+  assignee_type = "server"
+  auto_delete = false
+  datacenter = "nbg1-dc3"
+}
+
 resource "hcloud_server" "staging" {
   name = "staging"
   image = "debian-11"
@@ -13,6 +29,10 @@ resource "hcloud_server" "staging" {
     passwd = var.passwd
     fqdn = "staging.forgejo.dev"
   })
+  public_net {
+    ipv4 = hcloud_primary_ip.staging-ipv4.id
+    ipv6 = hcloud_primary_ip.staging-ipv6.id
+  }
 }
 
 # Set RDNS entry of staging server IPv4

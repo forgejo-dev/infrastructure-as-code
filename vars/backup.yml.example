@@ -4,8 +4,8 @@
 # Backup configuration
 #
 
-restic_version: "0.15.1"
-restic_target: "s3:https://s3.TODO.com/BUCKET"
+restic_version: "0.15.2"
+restic_target: "rest:https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY@restic.TODO.com/$AWS_ACCESS_KEY_ID/BUCKET"
 restic_key: "TODO"
 access_key: "TODO"
 secret_key: "TODO"

@@ -48,6 +48,7 @@
   loop:
     - backup.sh
     - restore.sh
+    - check.sh
 
 - name: Create log folder
   ansible.builtin.file:

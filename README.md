@@ -34,6 +34,14 @@ Terraform is used to create the infrastructure (VMs) and run a basic provisionin
 - To destroy the infrastructure, run:
     - `$ terraform destroy -var-file="secrets.tfvars"`
 
+### Staging
+
+- To create the infrastructure, run:
+    - `$ terraform plan -var-file="secrets.tfvars" -target=hcloud_server.staging`
+    - `$ terraform apply -var-file="secrets.tfvars" -target=hcloud_server.staging`
+- To destroy the infrastructure, run:
+    - `$ terraform destroy -var-file="secrets.tfvars" -target=hcloud_server.staging`
+
 
 ## Ansible
 
@@ -43,6 +51,13 @@ Ansible is used to configure the VMs and create/configure all necessary services
     - `$ export ANSIBLE_CONFIG=./ansible.cfg`
     - `$ ansible-galaxy install -r requirements.yml`
     - `$ ansible-playbook playbook.yml`
+
+### Staging
+
+- To create/configure/update all services only on the staging VM, run:
+    - `$ export ANSIBLE_CONFIG=./ansible.cfg`
+    - `$ ansible-galaxy install -r requirements.yml`
+    - `$ ansible-playbook playbook.yaml --limit staging`
 
 ### Ansible Lint
 

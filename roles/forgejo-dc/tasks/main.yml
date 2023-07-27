@@ -77,7 +77,6 @@
     search_string: "{{ item }}"
   loop:
     - "gitea/gitea.db"
-    - "[picture]"
     - "AVATAR_UPLOAD_PATH"
     - "REPOSITORY_AVATAR_UPLOAD_PATH"
     - "/data/gitea/attachments"

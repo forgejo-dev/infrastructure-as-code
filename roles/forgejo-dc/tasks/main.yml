@@ -68,3 +68,26 @@
     build: false
     restarted: true
     remove_orphans: true
+
+# Fixes for upgrade to Forgejo v1.20.1-0
+- name: Remove old paths in config file
+  ansible.builtin.lineinfile:
+    path: /srv/docker-compose/forgejo/forgejo/gitea/conf/app.ini
+    state: absent
+    search_string: "{{ item }}"
+  loop:
+    - "gitea/gitea.db"
+    - "AVATAR_UPLOAD_PATH"
+    - "REPOSITORY_AVATAR_UPLOAD_PATH"
+    - "/data/gitea/attachments"
+    - "[lfs]"
+    - "/data/git/lfs"
+
+- name: Restart docker compose stack
+  community.docker.docker_compose:
+    project_src: /srv/docker-compose/forgejo/
+    build: false
+    restarted: true
+    remove_orphans: true
+
+

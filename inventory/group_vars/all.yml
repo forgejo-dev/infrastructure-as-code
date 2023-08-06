@@ -32,7 +32,7 @@ migration_url: "s3-mig.forgejo.dev"
 #
 
 forgejo_ssh_port: "22"
-forgejo_release: "1.20.1-0"
+forgejo_release: "1.20.2-0"
 
 #
 # Swap config

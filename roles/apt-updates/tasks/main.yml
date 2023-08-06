@@ -3,3 +3,4 @@
   ansible.builtin.apt:
     force_apt_get: true
     upgrade: dist
+    update_cache: yes

@@ -48,6 +48,8 @@ services:
       - GITEA__ui__DEFAULT_THEME=forgejo-dark
       - GITEA____APP_NAME=Forgejo.dev
       - GITEA__attachment__MAX_SIZE=100
+      - GITEA__cron__ENABLED=true
+      - GITEA__cron__SCHEDULE=@every 8h00m
     restart: unless-stopped
     networks:
       - forgejo

@@ -35,3 +35,6 @@
     name: '{{ user_name }}'
     groups: docker
     append: true
+
+- name: Remove unused Docker resources from the system
+  command: docker image prune -a -f

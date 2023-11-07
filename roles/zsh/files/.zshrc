@@ -118,6 +118,6 @@ source $ZSH/oh-my-zsh.sh
 export PATH=$PATH:~/.local/bin/
 
 # Yubikey SSH stuff
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpg-connect-agent updatestartuptty /bye > /dev/null
+#export GPG_TTY="$(tty)"
+#export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+#gpg-connect-agent updatestartuptty /bye > /dev/null

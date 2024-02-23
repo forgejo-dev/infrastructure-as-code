@@ -12,7 +12,7 @@
 - name: Install nala
   ansible.builtin.apt:
     pkg:
-      - nala-legacy
+      - nala
 
 - name: Add nala alias to user config
   ansible.builtin.blockinfile:

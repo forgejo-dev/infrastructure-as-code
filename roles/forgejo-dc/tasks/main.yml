@@ -31,12 +31,16 @@
   with_items:
     - .env
 
+# - name: Deploy docker compose stack
+#   community.docker.docker_compose:
+#     project_src: /srv/docker-compose/forgejo/
+#     files:
+#       - docker-compose.yml
+#     remove_orphans: true
 - name: Deploy docker compose stack
-  community.docker.docker_compose:
-    project_src: /srv/docker-compose/forgejo/
-    files:
-      - docker-compose.yml
-    remove_orphans: true
+  ansible.builtin.shell:
+    cmd: docker compose up -d --remove-orphans
+    chdir: /srv/docker-compose/forgejo/
 
 # Customization(s)
 - name: Create custom template(s) folder
@@ -62,12 +66,16 @@
   loop:
     - home.tmpl
 
+# - name: Restart docker compose stack
+#   community.docker.docker_compose:
+#     project_src: /srv/docker-compose/forgejo/
+#     build: false
+#     restarted: true
+#     remove_orphans: true
 - name: Restart docker compose stack
-  community.docker.docker_compose:
-    project_src: /srv/docker-compose/forgejo/
-    build: false
-    restarted: true
-    remove_orphans: true
+  ansible.builtin.shell:
+    cmd: docker compose restart
+    chdir: /srv/docker-compose/forgejo/
 
 # Fixes for upgrade to Forgejo v1.20.1-0
 - name: Remove old paths in config file
@@ -83,9 +91,13 @@
     - "[lfs]"
     - "/data/git/lfs"
 
+# - name: Restart docker compose stack
+#   community.docker.docker_compose:
+#     project_src: /srv/docker-compose/forgejo/
+#     build: false
+#     restarted: true
+#     remove_orphans: true
 - name: Restart docker compose stack
-  community.docker.docker_compose:
-    project_src: /srv/docker-compose/forgejo/
-    build: false
-    restarted: true
-    remove_orphans: true
+  ansible.builtin.shell:
+    cmd: docker compose restart
+    chdir: /srv/docker-compose/forgejo/

@@ -26,12 +26,16 @@
   with_items:
     - .env
 
+# - name: Deploy docker compose stack
+#   community.docker.docker_compose:
+#     project_src: /srv/docker-compose/woodpecker/
+#     files:
+#       - docker-compose.yml
+#     remove_orphans: true
 - name: Deploy docker compose stack
-  community.docker.docker_compose:
-    project_src: /srv/docker-compose/woodpecker/
-    files:
-      - docker-compose.yml
-    remove_orphans: true
+  ansible.builtin.shell:
+    cmd: docker compose up -d --remove-orphans
+    chdir: /srv/docker-compose/woodpecker/
 
 - name: Install LXC dependencies
   ansible.builtin.apt:

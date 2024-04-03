@@ -26,9 +26,13 @@
   with_items:
     - .env
 
+# - name: Deploy docker compose stack
+#   community.docker.docker_compose:
+#     project_src: /srv/docker-compose/minio/
+#     files:
+#       - docker-compose.yml
+#     remove_orphans: true
 - name: Deploy docker compose stack
-  community.docker.docker_compose:
-    project_src: /srv/docker-compose/minio/
-    files:
-      - docker-compose.yml
-    remove_orphans: true
+  ansible.builtin.shell:
+    cmd: docker compose up -d --remove-orphans
+    chdir: /srv/docker-compose/minio/

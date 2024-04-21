@@ -82,3 +82,23 @@
     proto: tcp
     insert: 5
     route: true
+
+#
+# Block IPs from list
+#
+
+- name: Block IP (normal)
+  community.general.ufw:
+    rule: deny
+    insert: 1
+    route: true
+    src: '{{ item }}'
+  loop: "{{ blocked_ips }}"
+
+- name: Block IP (fwd)
+  community.general.ufw:
+    rule: deny
+    insert: 1
+    route: false
+    src: '{{ item }}'
+  loop: "{{ blocked_ips }}"

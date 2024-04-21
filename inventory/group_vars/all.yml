@@ -40,3 +40,11 @@ forgejo_release: "1.21.11-1"
 
 swap_size: "2048"
 swap_file: "/swapfile"
+
+#
+# Blocked IPs
+#
+
+blocked_ips:
+  - 47.76.99.127
+  - 47.76.209.138

@@ -1,0 +1,104 @@
+---
+- name: Install UFW
+  ansible.builtin.apt:
+    pkg:
+      - ufw
+
+- name: Enable UFW Docker forwarding
+  ansible.builtin.blockinfile:
+    path: /etc/ufw/after.rules
+    append_newline: true
+    prepend_newline: true
+    block: |
+      # BEGIN UFW AND DOCKER
+      *filter
+      :ufw-user-forward - [0:0]
+      :ufw-docker-logging-deny - [0:0]
+      :DOCKER-USER - [0:0]
+      -A DOCKER-USER -j ufw-user-forward
+
+      -A DOCKER-USER -j RETURN -s 10.0.0.0/8
+      -A DOCKER-USER -j RETURN -s 172.16.0.0/12
+      -A DOCKER-USER -j RETURN -s 192.168.0.0/16
+
+      -A DOCKER-USER -p udp -m udp --sport 53 --dport 1024:65535 -j RETURN
+
+      -A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 192.168.0.0/16
+      -A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 10.0.0.0/8
+      -A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 172.16.0.0/12
+      -A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 192.168.0.0/16
+      -A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 10.0.0.0/8
+      -A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 172.16.0.0/12
+
+      -A DOCKER-USER -j RETURN
+
+      -A ufw-docker-logging-deny -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW DOCKER BLOCK] "
+      -A ufw-docker-logging-deny -j DROP
+
+      COMMIT
+      # END UFW AND DOCKER
+
+- name: Restart UFW
+  ansible.builtin.shell:
+    cmd: ufw reload
+
+# ufw route insert 1 allow proto tcp from any to any port 80
+- name: Allow port 22
+  community.general.ufw:
+    rule: allow
+    port: 22
+    proto: tcp
+    insert: 1
+    route: true
+
+- name: Allow port 80
+  community.general.ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+    insert: 2
+    route: true
+
+- name: Allow port 443
+  community.general.ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+    insert: 3
+    route: true
+
+- name: Allow port 9100
+  community.general.ufw:
+    rule: allow
+    port: 9100
+    proto: tcp
+    insert: 4
+    route: true
+
+- name: Allow port 50001
+  community.general.ufw:
+    rule: allow
+    port: 50001
+    proto: tcp
+    insert: 5
+    route: true
+
+#
+# Block IPs from list
+#
+
+- name: Block IP (normal)
+  community.general.ufw:
+    rule: deny
+    insert: 1
+    route: true
+    src: '{{ item }}'
+  loop: "{{ blocked_ips }}"
+
+- name: Block IP (fwd)
+  community.general.ufw:
+    rule: deny
+    insert: 1
+    route: false
+    src: '{{ item }}'
+  loop: "{{ blocked_ips }}"

@@ -26,3 +26,6 @@
       become: true
     - role: swap
       become: true
+    - role: firewall-block
+      when: "role_config.firewall_enable"
+      become: true

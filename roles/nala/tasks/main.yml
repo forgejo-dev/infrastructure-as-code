@@ -1,9 +1,4 @@
 ---
-- name: Add apt signing key
-  ansible.builtin.apt_key:
-    url: https://deb.volian.org/volian/scar.key
-    state: present
-
 - name: Add apt repository
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64] https://deb.volian.org/volian/ scar main"

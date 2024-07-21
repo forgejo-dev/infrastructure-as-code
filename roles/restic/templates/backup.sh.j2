@@ -23,8 +23,8 @@ rm -f $dir_prefix/forgejo/postgres/dump.sql
 rm -f $dir_prefix/woodpecker/postgres/dump.sql
 
 # Dump databases
-docker exec -t forgejo_db_1 pg_dumpall -c -U forgejo > $dir_prefix/forgejo/postgres/dump.sql
-docker exec -t woodpecker_woodpecker-database_1 pg_dumpall -c -U postgres > $dir_prefix/woodpecker/postgres/dump.sql
+docker exec -t forgejo-db-1 pg_dumpall -c -U forgejo > $dir_prefix/forgejo/postgres/dump.sql
+docker exec -t woodpecker-woodpecker-database-1 pg_dumpall -c -U postgres > $dir_prefix/woodpecker/postgres/dump.sql
 
 # Check if repo must be initialized
 if $restic cat config >/dev/null 2>&1; then

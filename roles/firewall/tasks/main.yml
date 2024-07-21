@@ -43,3 +43,28 @@
     rule: allow
     port: '{{ forgejo_ssh_port }}'
     proto: tcp
+
+# LXC
+# ufw allow in on lxcbr0
+# ufw route allow in on lxcbr0
+# ufw route allow out on lxcbr0
+
+- name: Allow in on lxcbr0
+  community.general.ufw:
+    rule: allow
+    interface: lxcbr0
+    direction: in
+
+- name: Route allow in on lxcbr0
+  community.general.ufw:
+    rule: allow
+    route: true
+    interface: lxcbr0
+    direction: in
+
+- name: Route allow out on lxcbr0
+  community.general.ufw:
+    rule: allow
+    route: true
+    interface: lxcbr0
+    direction: out

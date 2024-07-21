@@ -8,10 +8,10 @@
     pkg:
       - python3-docker
       - python3-pip
-- name: Install docker dependencies via pip
-  ansible.builtin.include_role:
-    name: geerlingguy.pip
-  vars:
-    pip_install_packages:
-      - name: docker
-      - name: docker-compose
+# - name: Install docker dependencies via pip
+#   ansible.builtin.include_role:
+#     name: geerlingguy.pip
+#   vars:
+#     pip_install_packages:
+#       - name: docker
+#       - name: docker-compose

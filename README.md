@@ -71,7 +71,7 @@ Unfortunately, there are currently some manual steps required to complete the in
 
 - Go to the webpage and finish the Forgejo installation including the creation of a `root` user.
     - Login as `root` + change the profile picture.
-- [Add an OAuth2 application for Woodpecker CI](https://woodpecker-ci.org/docs/administration/vcs/gitea#registration)
+- [Add an OAuth2 application for Woodpecker CI](https://woodpecker-ci.org/docs/administration/forges/gitea)
     - Register the tokens within the Woodpecker config and run the Ansible playbook again.
 - Create the organisation `staging.forgejo.dev`/`forgejo.dev`.
     - Set the correct profile picture.

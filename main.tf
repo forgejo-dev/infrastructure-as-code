@@ -4,7 +4,7 @@
 
 resource "hcloud_server" "production" {
   name = "production"
-  image = "debian-11"
+  image = "debian-12"
   server_type = "cpx21"
   location = "nbg1"
   ssh_keys  = ["${data.hcloud_ssh_key.ssh_key.id}"]
@@ -16,6 +16,12 @@ resource "hcloud_server" "production" {
   delete_protection = true
   rebuild_protection = true
   firewall_ids = [hcloud_firewall.forgejo-fw.id]
+  # Ignore image changes to prevent re-creation of the whole server
+  lifecycle {
+    ignore_changes = [
+      image,
+    ]
+  }
 }
 
 # Set RDNS entry of production server IPv4

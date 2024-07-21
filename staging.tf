@@ -22,7 +22,7 @@ resource "hcloud_primary_ip" "staging-ipv6" {
 
 resource "hcloud_server" "staging" {
   name = "staging"
-  image = "debian-11"
+  image = "debian-12"
   server_type = "cx11"
   location = "nbg1"
   ssh_keys  = ["${data.hcloud_ssh_key.ssh_key.id}"]
@@ -36,6 +36,12 @@ resource "hcloud_server" "staging" {
     ipv6 = hcloud_primary_ip.staging-ipv6.id
   }
   firewall_ids = [hcloud_firewall.forgejo-fw.id]
+  # Ignore image changes to prevent re-creation of the whole server
+  lifecycle {
+    ignore_changes = [
+      image,
+    ]
+  }
 }
 
 # Set RDNS entry of staging server IPv4

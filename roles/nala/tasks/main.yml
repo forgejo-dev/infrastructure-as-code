@@ -1,8 +1,8 @@
 ---
-- name: Add apt repository
+- name: Remove (old) apt repository
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64] https://deb.volian.org/volian/ scar main"
-    state: present
+    state: absent
 
 - name: Install nala
   ansible.builtin.apt:

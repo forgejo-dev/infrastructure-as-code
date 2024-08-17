@@ -49,7 +49,7 @@ services:
       - GITEA____APP_NAME=Forgejo.dev
       - GITEA__attachment__MAX_SIZE=100
       - GITEA__cron__ENABLED=true
-      - GITEA__cron__SCHEDULE=@every 1h00m
+      - GITEA__cron__SCHEDULE=@every 0h30m
       - GITEA__admin__DEFAULT_EMAIL_NOTIFICATIONS=onmention
     restart: unless-stopped
     networks:

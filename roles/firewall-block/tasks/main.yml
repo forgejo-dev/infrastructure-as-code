@@ -102,3 +102,31 @@
     route: false
     src: '{{ item }}'
   loop: "{{ blocked_ips }}"
+
+#
+# Block IPs (v6) from list
+#
+
+# find number of first IPv6 rule
+- name: Find number of first IPv6 rule
+  shell: ufw status numbered | grep '22/tcp (v6)' | grep 'ALLOW FWD' | cut -d "[" -f2 | cut -d "]" -f1
+  register: ipv6_first_number
+
+- debug:
+    msg: "Found index of the first IPv6 rule is {{ipv6_first_number.stdout|int}}"
+
+- name: Block IP v6 (normal)
+  community.general.ufw:
+    rule: deny
+    insert: "{{ipv6_first_number.stdout|int}}"
+    route: true
+    src: '{{ item }}'
+  loop: "{{ blocked_ips_v6 }}"
+
+- name: Block IP v6 (fwd)
+  community.general.ufw:
+    rule: deny
+    insert: "{{ipv6_first_number.stdout|int}}"
+    route: false
+    src: '{{ item }}'
+  loop: "{{ blocked_ips_v6 }}"

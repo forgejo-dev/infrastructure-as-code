@@ -17,6 +17,7 @@
   loop:
     - docker-compose.yml
     - proxy.conf
+    - forgejo.dev
 
 # - name: Deploy docker compose stack
 #   community.docker.docker_compose:

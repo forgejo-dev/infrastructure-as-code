@@ -1,0 +1,5 @@
+if ($http_user_agent = "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"){
+    return 429;
+}
+
+#limit_req zone=one;

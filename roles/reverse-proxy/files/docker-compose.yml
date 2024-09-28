@@ -15,6 +15,7 @@ services:
       - certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+      - ./forgejo.dev:/etc/nginx/vhost.d/forgejo.dev:ro
     networks:
       - web
     restart: unless-stopped

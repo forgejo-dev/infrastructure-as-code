@@ -91,6 +91,21 @@
     - "[lfs]"
     - "/data/git/lfs"
 
+# robots.txt
+- name: Create public folder
+  ansible.builtin.file:
+    path: /srv/docker-compose/forgejo/forgejo/gitea/public
+    state: directory
+    mode: '0755'
+
+- name: Copy robots.txt file
+  ansible.builtin.copy:
+    src: files/{{ item }}
+    dest: /srv/docker-compose/forgejo/forgejo/gitea/public/{{ item }}
+    mode: 0644
+  loop:
+    - robots.txt
+
 # - name: Restart docker compose stack
 #   community.docker.docker_compose:
 #     project_src: /srv/docker-compose/forgejo/

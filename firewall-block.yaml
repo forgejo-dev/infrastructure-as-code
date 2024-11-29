@@ -1,0 +1,9 @@
+---
+- name: Check SSH port
+  import_playbook: ssh.yaml
+- name: Firewall blocking list
+  hosts: all
+  roles:
+    - role: firewall-block
+      when: "role_config.firewall_enable"
+      become: true

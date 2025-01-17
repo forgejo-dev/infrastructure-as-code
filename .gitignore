@@ -20,3 +20,5 @@ vars/woodpecker_staging.yml
 vars/backup.yml
 
 s3-migration/local-storage/
+
+.DS_Store

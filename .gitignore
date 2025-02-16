@@ -22,3 +22,5 @@ vars/backup.yml
 s3-migration/local-storage/
 
 .DS_Store
+
+keys/

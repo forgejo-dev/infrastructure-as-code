@@ -1,0 +1,5 @@
+Host {{ backup_config.backup_host }}
+        HostName {{ backup_config.backup_host }}
+        User {{ backup_config.sftp_user }}
+        Port 23
+        IdentityFile ~/.ssh/root@forgejo.dev

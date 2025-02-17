@@ -3,8 +3,8 @@
 set -e
 
 # Set crypto passphrase for encryption
-export AWS_ACCESS_KEY_ID={{ backup_config.access_key }}
-export AWS_SECRET_ACCESS_KEY={{ backup_config.secret_key }}
+export SFTP_USER={{ backup_config.sftp_user }}
+export BACKUP_HOST={{ backup_config.backup_host }}
 export RESTIC_PASSWORD={{ backup_config.restic_key }}
 export RESTIC_REPOSITORY={{ backup_config.restic_target }}
 restic="/opt/restic/restic"

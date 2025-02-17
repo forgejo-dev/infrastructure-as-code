@@ -5,7 +5,7 @@
 #
 
 restic_version: "0.16.4"
-restic_target: "rest:https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY@restic.TODO.com/$AWS_ACCESS_KEY_ID/BUCKET"
+restic_target: "sftp:$SFTP_USER@$BACKUP_HOST:forgejo-dev/forgejo-dev-backup"
 restic_key: "TODO"
-access_key: "TODO"
-secret_key: "TODO"
+sftp_user: "TODO"
+backup_host: "TODO"

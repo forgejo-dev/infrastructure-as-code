@@ -50,6 +50,35 @@
     - restore.sh
     - check.sh
 
+- name: Add .ssh directory for root
+  ansible.builtin.file:
+    path: /root/.ssh
+    state: directory
+    mode: 0700
+    owner: "root"
+    group: "root"
+
+- name: Copy SSH config file
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /root/.ssh/{{ item }}
+    owner: "root"
+    group: "root"
+    mode: 0700
+  loop:
+    - config
+
+- name: Copy SSH keypair
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /root/.ssh/
+    owner: "root"
+    group: "root"
+    mode: 0600
+  loop:
+    - keys/root@forgejo.dev
+    - keys/root@forgejo.dev
+
 - name: Create log folder
   ansible.builtin.file:
     path: "{{ item }}"

@@ -77,7 +77,7 @@
     mode: 0600
   loop:
     - keys/root@forgejo.dev
-    - keys/root@forgejo.dev
+    - keys/root@forgejo.dev.pub
 
 - name: Create log folder
   ansible.builtin.file:

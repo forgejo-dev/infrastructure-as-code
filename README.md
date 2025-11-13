@@ -15,8 +15,6 @@ Automation to create/configure the infrastructure for all services related to [f
     - Replace the dummy values with the real ones
 - Copy `vars/smtp.yml.example` to `vars/smtp.yml`
     - Replace the dummy values with the real ones
-- Copy `vars/woodpecker.yml.example` to `vars/woodpecker_staging.yml` and `vars/woodpecker_production.yml`
-    - Replace the dummy values with the real ones (values are only available after the manual creation of an OAuth2 app)
 - Copy `vars/minio.yml.example` to `vars/minio.yml`
     - Replace the dummy values with the real ones
 - Copy `vars/backup.yml.example` to `vars/backup.yml`
@@ -71,8 +69,6 @@ Unfortunately, there are currently some manual steps required to complete the in
 
 - Go to the webpage and finish the Forgejo installation including the creation of a `root` user.
     - Login as `root` + change the profile picture.
-- [Add an OAuth2 application for Woodpecker CI](https://woodpecker-ci.org/docs/administration/forges/gitea)
-    - Register the tokens within the Woodpecker config and run the Ansible playbook again.
 - Create the organisation `staging.forgejo.dev`/`forgejo.dev`.
     - Set the correct profile picture.
 - Create the `org` repository in the organisation.

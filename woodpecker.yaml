@@ -1,0 +1,11 @@
+---
+- name: Check SSH port
+  import_playbook: ssh.yaml
+- name: Deploy forgejo
+  hosts: production
+  roles:
+    - woodpecker-dc
+  become: true
+  vars:
+    instance_url: "{{prod_url}}"
+    woodpecker_mode: "woodpecker_production.yml"

@@ -1,30 +1,30 @@
 ---
-- name: Include woodpecker vars
-  ansible.builtin.include_vars:
-    file: "{{ woodpecker_mode }}"
-    name: woodpecker_config
+# - name: Include woodpecker vars
+#   ansible.builtin.include_vars:
+#     file: "{{ woodpecker_mode }}"
+#     name: woodpecker_config
 
-- name: Create project directory
-  ansible.builtin.file:
-    path: /srv/docker-compose/woodpecker
-    state: directory
-    mode: '0755'
+# - name: Create project directory
+#   ansible.builtin.file:
+#     path: /srv/docker-compose/woodpecker
+#     state: directory
+#     mode: '0755'
 
-- name: Copy docker compose file
-  ansible.builtin.template:
-    src: "{{ item }}.j2"
-    dest: /srv/docker-compose/woodpecker/{{ item }}
-    mode: 0644
-  with_items:
-    - docker-compose.yml
+# - name: Copy docker compose file
+#   ansible.builtin.template:
+#     src: "{{ item }}.j2"
+#     dest: /srv/docker-compose/woodpecker/{{ item }}
+#     mode: 0644
+#   with_items:
+#     - docker-compose.yml
 
-- name: Copy ENV file to docker compose stack
-  ansible.builtin.template:
-    src: "{{ item }}.j2"
-    dest: /srv/docker-compose/woodpecker/{{ item }}
-    mode: 0644
-  with_items:
-    - .env
+# - name: Copy ENV file to docker compose stack
+#   ansible.builtin.template:
+#     src: "{{ item }}.j2"
+#     dest: /srv/docker-compose/woodpecker/{{ item }}
+#     mode: 0644
+#   with_items:
+#     - .env
 
 # - name: Deploy docker compose stack
 #   community.docker.docker_compose:
@@ -32,87 +32,106 @@
 #     files:
 #       - docker-compose.yml
 #     remove_orphans: true
-- name: Deploy docker compose stack
+# - name: Deploy docker compose stack
+#   ansible.builtin.shell:
+#     cmd: docker compose up -d --remove-orphans
+#     chdir: /srv/docker-compose/woodpecker/
+- name: Shutdown (old) docker compose stack
   ansible.builtin.shell:
-    cmd: docker compose up -d --remove-orphans
+    cmd: docker compose down
     chdir: /srv/docker-compose/woodpecker/
 
-- name: Install LXC dependencies
-  ansible.builtin.apt:
-      pkg:
-        - lxc
-        - git
-        - git-lfs
-        - debootstrap
-        - lxc-templates
+# - name: Install LXC dependencies
+#   ansible.builtin.apt:
+#       pkg:
+#         - lxc
+#         - git
+#         - git-lfs
+#         - debootstrap
+#         - lxc-templates
 
-- name: Get plugin-git release assets from GitHub API
-  ansible.builtin.get_url:
-    url: https://api.github.com/repos/woodpecker-ci/plugin-git/releases/latest
-    force: yes
-    headers:
-      Accept: "application/vnd.github.v3+json"
-    dest: "/tmp/plugin-git.response.txt"
+# - name: Get plugin-git release assets from GitHub API
+#   ansible.builtin.get_url:
+#     url: https://api.github.com/repos/woodpecker-ci/plugin-git/releases/latest
+#     force: yes
+#     headers:
+#       Accept: "application/vnd.github.v3+json"
+#     dest: "/tmp/plugin-git.response.txt"
 
-- name: Get plugin-git download URL
-  ansible.builtin.shell: |
-    cat "/tmp/plugin-git.response.txt" | jq '.assets | .[] | select(.browser_download_url | contains("linux-amd64_plugin-git")) | .url' | sed -e 's/^"//' -e 's/"$//'
-  register: "download_url_plugin_git"
+# - name: Get plugin-git download URL
+#   ansible.builtin.shell: |
+#     cat "/tmp/plugin-git.response.txt" | jq '.assets | .[] | select(.browser_download_url | contains("linux-amd64_plugin-git")) | .url' | sed -e 's/^"//' -e 's/"$//'
+#   register: "download_url_plugin_git"
 
-- name: Show plugin-git download URL
-  ansible.builtin.debug:
-    msg: "{{ download_url_plugin_git.stdout }}"
+# - name: Show plugin-git download URL
+#   ansible.builtin.debug:
+#     msg: "{{ download_url_plugin_git.stdout }}"
 
-- name: Download latest plugin-git release
-  ansible.builtin.get_url:
-    url: "{{ download_url_plugin_git.stdout }}"
-    dest: /usr/local/bin/plugin-git
-    tmp_dest: /tmp/
-    force: yes
-    headers:
-      Accept: "application/octet-stream"
+# - name: Download latest plugin-git release
+#   ansible.builtin.get_url:
+#     url: "{{ download_url_plugin_git.stdout }}"
+#     dest: /usr/local/bin/plugin-git
+#     tmp_dest: /tmp/
+#     force: yes
+#     headers:
+#       Accept: "application/octet-stream"
 
-- name: Remove tmp file
+# - name: Remove tmp file
+#   ansible.builtin.file:
+#     path: /tmp/plugin-git.response.txt
+#     state: absent
+
+# - name: Changing permission of plugin-git binary
+#   file:
+#     dest: /usr/local/bin/plugin-git
+#     mode: a+x
+- name: Remove plugin-git binary
   ansible.builtin.file:
-    path: /tmp/plugin-git.response.txt
+    dest: /usr/local/bin/plugin-git
     state: absent
 
-- name: Changing permission of plugin-git binary
-  file:
-    dest: /usr/local/bin/plugin-git
-    mode: a+x
-
-- name: Create agent directory
+# - name: Create agent directory
+#   ansible.builtin.file:
+#     path: /opt/woodpecker
+#     state: directory
+#     mode: '0755'
+- name: Remove agent directory
   ansible.builtin.file:
-    path: /opt/woodpecker
-    state: directory
-    mode: '0755'
+    dest: /opt/woodpecker
+    state: absent
 
-- name: Get woodpecker agent binary with LXC backend support
-  ansible.builtin.command: "{{ item }}"
-  with_items:
-    - docker rm -f agent
-    - docker pull codeberg.org/forgejo-contrib/woodpecker-forgejo-agent:next
-    - docker create --name agent codeberg.org/forgejo-contrib/woodpecker-forgejo-agent:next
-    - docker cp agent:/bin/woodpecker-agent /opt/woodpecker/woodpecker-agent
-    - docker rm -f agent
+# - name: Get woodpecker agent binary with LXC backend support
+#   ansible.builtin.command: "{{ item }}"
+#   with_items:
+#     - docker rm -f agent
+#     - docker pull codeberg.org/forgejo-contrib/woodpecker-forgejo-agent:next
+#     - docker create --name agent codeberg.org/forgejo-contrib/woodpecker-forgejo-agent:next
+#     - docker cp agent:/bin/woodpecker-agent /opt/woodpecker/woodpecker-agent
+#     - docker rm -f agent
 
-- name: Changing permission of woodpecker-agent binary
-  file:
-    dest: /opt/woodpecker/woodpecker-agent
-    mode: a+x
+# - name: Changing permission of woodpecker-agent binary
+#   file:
+#     dest: /opt/woodpecker/woodpecker-agent
+#     mode: a+x
 
-- name: Install woodpecker-agent LXC systemd service file
-  ansible.builtin.template:
-    src: "{{ item }}.j2"
-    dest: /etc/systemd/system/{{ item }}
-    mode: 0644
-  with_items:
-   - woodpecker-agent-lxc.service
+# - name: Install woodpecker-agent LXC systemd service file
+#   ansible.builtin.template:
+#     src: "{{ item }}.j2"
+#     dest: /etc/systemd/system/{{ item }}
+#     mode: 0644
+#   with_items:
+#    - woodpecker-agent-lxc.service
+- name: Remove LXC systemd service file
+  ansible.builtin.file:
+    dest: /etc/systemd/system/woodpecker-agent-lxc.service
+    state: absent
 
-- name: Restart woodpecker-agent LXC systemd service
+# - name: Restart woodpecker-agent LXC systemd service
+#   ansible.builtin.systemd:
+#     state: restarted
+#     name: woodpecker-agent-lxc
+#     daemon_reload: yes
+#     enabled: true
+- name: Remove LXC systemd service
   ansible.builtin.systemd:
-    state: restarted
-    name: woodpecker-agent-lxc
     daemon_reload: yes
-    enabled: true

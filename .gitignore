@@ -9,13 +9,7 @@ terraform.tfstate.backup
 *.tfvars
 vars/smtp.yml
 
-vars/woodpecker.yml
-
 vars/minio.yml
-
-vars/woodpecker_production.yml
-
-vars/woodpecker_staging.yml
 
 vars/backup.yml
 

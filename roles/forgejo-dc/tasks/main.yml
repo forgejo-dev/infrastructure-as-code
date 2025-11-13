@@ -56,7 +56,12 @@
     mode: 0644
   with_items:
     - extra_links_footer.tmpl
-    - extra_links.tmpl
+
+# Remove old deprecated extra link for Woodpecker
+- name: Remove extra link for Woodpecker from Forgejo
+  ansible.builtin.file:
+    dest: /srv/docker-compose/forgejo/forgejo/gitea/templates/custom/extra_links.tmpl
+    state: absent
 
 - name: Copy home template
   ansible.builtin.copy:

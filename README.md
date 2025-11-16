@@ -74,6 +74,8 @@ Unfortunately, there are currently some manual steps required to complete the in
 - Create the `org` repository in the organisation.
     - Set the correct profile picture.
 - Create user(s) and invite them to the organization.
+- Create the Forgejo Actions runner configuration.
+    - Forgejo documentation: https://forgejo.org/docs/latest/admin/actions/runner-installation/
 
 
 ## License

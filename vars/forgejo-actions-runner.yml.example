@@ -1,0 +1,9 @@
+---
+
+#
+# Forgejo Actions Runner configuration
+#
+
+uuid: "TODO_REGISTER_RUNNER"
+token: "TODO_REGISTER_RUNNER"
+user_id: "1011"

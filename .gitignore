@@ -18,3 +18,4 @@ s3-migration/local-storage/
 .DS_Store
 
 keys/
+vars/forgejo-actions-runner.yml

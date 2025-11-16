@@ -1,0 +1,10 @@
+---
+- name: Check SSH port
+  import_playbook: ssh.yaml
+- name: Deploy forgejo actions
+  hosts: production
+  roles:
+    - forgejo-actions-runner
+  become: true
+  vars:
+    instance_url: "{{ prod_url }}"

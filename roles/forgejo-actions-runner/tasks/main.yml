@@ -27,25 +27,22 @@
 - name: Change data permissions
   ansible.builtin.file:
     dest: /srv/docker-compose/forgejo-actions/data
-    owner: {{ runner_config.user_id }}
-    group: {{ runner_config.user_id }}
-    recursive: true
+    owner: "{{ runner_config.user_id }}"
+    group: "{{ runner_config.user_id }}"
     mode: '0775'
 
 - name: Change data cache permissions
   ansible.builtin.file:
     dest: /srv/docker-compose/forgejo-actions/data/.cache
-    owner: {{ runner_config.user_id }}
-    group: {{ runner_config.user_id }}
-    mode: '0666'
+    owner: "{{ runner_config.user_id }}"
+    group: "{{ runner_config.user_id }}"
+    mode: '02775'
 
 - name: Copy runner config file
   ansible.builtin.template:
-    src: "{{ item }}.j2"
-    dest: /srv/docker-compose/forgejo-actions/data/{{ item }}
+    src: "runner-config.j2"
+    dest: /srv/docker-compose/forgejo-actions/data/.runner
     mode: 0644
-  with_items:
-    - runner-config
 
 # - name: Deploy docker compose stack
 #   community.docker.docker_compose:

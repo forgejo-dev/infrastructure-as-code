@@ -9,13 +9,7 @@ terraform.tfstate.backup
 *.tfvars
 vars/smtp.yml
 
-vars/woodpecker.yml
-
 vars/minio.yml
-
-vars/woodpecker_production.yml
-
-vars/woodpecker_staging.yml
 
 vars/backup.yml
 
@@ -24,3 +18,4 @@ s3-migration/local-storage/
 .DS_Store
 
 keys/
+vars/forgejo-actions-runner.yml

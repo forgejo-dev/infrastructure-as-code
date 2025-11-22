@@ -1,0 +1,56 @@
+---
+- name: Include Forgejo Action runner vars
+  ansible.builtin.include_vars:
+    file: forgejo-actions-runner.yml
+    name: runner_config
+
+- name: Create project directory
+  ansible.builtin.file:
+    path: /srv/docker-compose/forgejo-actions
+    state: directory
+    mode: '0755'
+
+- name: Copy docker compose file
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /srv/docker-compose/forgejo-actions/{{ item }}
+    mode: 0644
+  with_items:
+    - docker-compose.yml
+
+- name: Create data directory
+  ansible.builtin.file:
+    path: /srv/docker-compose/forgejo-actions/data/.cache
+    state: directory
+    mode: '0775'
+
+- name: Change data permissions
+  ansible.builtin.file:
+    dest: /srv/docker-compose/forgejo-actions/data
+    owner: "{{ runner_config.user_id }}"
+    group: "{{ runner_config.user_id }}"
+    mode: '0775'
+
+- name: Change data cache permissions
+  ansible.builtin.file:
+    dest: /srv/docker-compose/forgejo-actions/data/.cache
+    owner: "{{ runner_config.user_id }}"
+    group: "{{ runner_config.user_id }}"
+    mode: '02775'
+
+- name: Copy runner config file
+  ansible.builtin.template:
+    src: "runner-config.j2"
+    dest: /srv/docker-compose/forgejo-actions/data/.runner
+    mode: 0644
+
+# - name: Deploy docker compose stack
+#   community.docker.docker_compose:
+#     project_src: /srv/docker-compose/forgejo-actions/
+#     files:
+#       - docker-compose.yml
+#     remove_orphans: true
+- name: Deploy docker compose stack
+  ansible.builtin.shell:
+    cmd: docker compose up -d --remove-orphans
+    chdir: /srv/docker-compose/forgejo-actions/

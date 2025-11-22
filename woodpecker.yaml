@@ -4,11 +4,7 @@
 - name: Deploy forgejo
   hosts: production
   roles:
-    - reverse-proxy
-    - forgejo-dc
-    # Woodpecker was replaced by Forgejo Actions.
     - woodpecker-dc
-    - minio-dc
   become: true
   vars:
     instance_url: "{{prod_url}}"

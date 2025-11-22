@@ -19,6 +19,8 @@ Automation to create/configure the infrastructure for all services related to [f
     - Replace the dummy values with the real ones
 - Copy `vars/backup.yml.example` to `vars/backup.yml`
     - Replace the dummy values with the real ones
+- Copy `forgejo-actions-runner.yml.example` to `forgejo-actions-runner.yml`
+    - Replace the dummy values with the real ones
 
 
 ## Terraform

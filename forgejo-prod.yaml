@@ -6,6 +6,7 @@
   roles:
     - reverse-proxy
     - forgejo-dc
+    # Woodpecker was replaced by Forgejo Actions.
     - woodpecker-dc
     - minio-dc
   become: true

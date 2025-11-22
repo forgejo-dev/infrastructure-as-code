@@ -1,4 +1,9 @@
 ---
+# ---
+# This role was previously used to install and configure Woodpecker incl. an LXC-based runner.
+# As of 2025-11, it was replaced by Forgejo Actions and, hence, this role just removes the previous Woodpecker bits.
+# ---
+
 # - name: Include woodpecker vars
 #   ansible.builtin.include_vars:
 #     file: "{{ woodpecker_mode }}"

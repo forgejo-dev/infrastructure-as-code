@@ -17,6 +17,11 @@ services:
     networks:
       - web
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 100m
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion

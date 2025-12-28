@@ -9,7 +9,7 @@ services:
       - default
 
   runner:
-    image: 'data.forgejo.org/forgejo/runner:11'
+    image: 'data.forgejo.org/forgejo/runner:12.3.1'
     depends_on:
       dind:
         condition: service_started

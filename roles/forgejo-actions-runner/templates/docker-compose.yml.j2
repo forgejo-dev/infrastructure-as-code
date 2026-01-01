@@ -23,13 +23,9 @@ services:
     restart: 'unless-stopped'
     networks:
       - default
-      - forgejo
     #command: '/bin/sh -c "while : ; do sleep 1 ; done ;"'
     command: '/bin/sh -c "sleep 5; forgejo-runner daemon"'
 
 networks:
-  forgejo:
-    external: true
-    name: forgejo_forgejo
   default:
     external: false

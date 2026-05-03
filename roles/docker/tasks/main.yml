@@ -5,19 +5,18 @@
     name:
       - ca-certificates
       - curl
-      - gnupg
-      - lsb-release
-      - apparmor
     state: present
 
-- name: Add apt signing key
-  ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/debian/gpg
-    state: present
+- name: Add Docker apt repository key.
+  ansible.builtin.get_url:
+    url: "https://download.docker.com/linux/debian/gpg"
+    dest: /etc/apt/trusted.gpg.d/docker.asc
+    mode: '0644'
+    force: true
 
 - name: Add apt repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/debian bookworm stable"
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian trixie stable"
     state: present
 
 - name: Install Docker packages

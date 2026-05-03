@@ -6,7 +6,7 @@
       - htop
       - iftop
       - iotop
-      - neofetch
+      - fastfetch
       - git
       - dnsutils
       - nload
@@ -24,7 +24,7 @@
       - nmap
       - speedtest-cli
       - sshfs
-      - tldr
+      # - tldr
       - tree
       - net-tools
       - edac-utils

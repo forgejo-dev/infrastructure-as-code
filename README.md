@@ -3,6 +3,16 @@
 Automation to create/configure the infrastructure for all services related to [forgejo.dev](https://forgejo.dev).
 
 
+## Setup remote
+
+These steps must be executed on the target system, i.e., the development VM or physical host.
+
+- Prerequisites: Debian installed + user `maxkratz` configured
+    - It is necessary to use the *minimal* config within the installation wizard.
+    - If you want all [roles](./roles) to function properly, you have to select `English` as the main language within the Debian installer.
+- Install necessary packages: ```$ sudo apt install openssh-server python3-apt```
+
+
 ## Setup (client/workstation)
 
 - Install all dependencies:

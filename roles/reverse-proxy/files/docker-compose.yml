@@ -22,6 +22,10 @@ services:
       options:
         max-file: 5
         max-size: 100m
+    # CVE 2026-11-18
+    # https://github.com/nginx-proxy/nginx-proxy/issues/2791#issuecomment-6988701118
+    environment:
+      - ENABLE_HTTP2=false
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion

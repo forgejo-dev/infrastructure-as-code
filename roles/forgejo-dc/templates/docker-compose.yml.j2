@@ -69,6 +69,8 @@ services:
     environment:
       - BIND=:8080
       - DIFFICULTY=5
+      - COOKIE_EXPIRATION_TIME=24h
+      - POLICY_FNAME=/data/cfg/botpolicy.yaml
 #      - METRICS_BIND=:9090
       - SERVER_ROBOTS_TXT=false
       - TARGET=http://server:3000
@@ -79,6 +81,8 @@ services:
     networks:
       - forgejo
       - web
+    volumes:
+      - "./botpolicy.yaml:/data/cfg/botpolicy.yaml:ro"
 
   # postgres database
   db:

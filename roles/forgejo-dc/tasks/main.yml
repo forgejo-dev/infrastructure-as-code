@@ -31,6 +31,14 @@
   with_items:
     - .env
 
+- name: Copy botpolicy.yaml file
+  ansible.builtin.copy:
+    src: files/{{ item }}
+    dest: /srv/docker-compose/forgejo/{{ item }}
+    mode: 0644
+  loop:
+    - botpolicy.yaml
+
 # - name: Deploy docker compose stack
 #   community.docker.docker_compose:
 #     project_src: /srv/docker-compose/forgejo/
